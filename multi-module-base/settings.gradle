@@ -1,0 +1,5 @@
+rootProject.name = 'multi-module-base'
+
+include ':application'
+include ':web'
+include ':service'

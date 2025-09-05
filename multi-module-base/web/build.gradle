@@ -1,0 +1,47 @@
+plugins {
+	id 'java'
+	id 'org.openapi.generator'
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+	implementation project(':service')
+}
+
+openApiGenerate {
+	generatorName = 'spring'
+	inputSpec = "${rootProject.projectDir}/openapi/pet-store.yaml"
+	modelNameSuffix = 'Dto'
+	configOptions = [
+			library				   		: 'spring-boot',
+			useSpringBoot3				: 'true',
+			useSpringController			: 'true',
+			useSpringBuiltInValidation  : 'true',
+			skipDefaultInterface   		: 'true',
+			unhandledException			: 'true',
+			interfaceOnly				: 'true',
+			generateBuilders			: 'true',
+			documentationProvider  		: 'source',
+			apiPackage             		: 'com.examples.application.api.v1',
+			modelPackage           		: 'com.examples.application.api.v1',
+			useTags                		: 'true',
+			openApiNullable				: 'false'
+	]
+	globalProperties = [
+			apiTests: 'false',
+			modelTests: 'false',
+	]
+}
+
+sourceSets {
+	main {
+		java {
+			srcDir layout.buildDirectory.dir('generate-resources/main/src/main/java')
+		}
+	}
+}
+tasks.named('compileJava') {
+	dependsOn 'openApiGenerate'
+}
+
