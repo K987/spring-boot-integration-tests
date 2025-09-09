@@ -33,6 +33,11 @@ subprojects {
 			}
 		}
 
+		dependencies {
+		    	compileOnly 'org.projectlombok:lombok'
+            	annotationProcessor 'org.projectlombok:lombok'
+		}
+
 		java {
 			toolchain {
 				languageVersion = JavaLanguageVersion.of(21)

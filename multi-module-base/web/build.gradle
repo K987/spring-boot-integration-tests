@@ -1,5 +1,5 @@
 plugins {
-	id 'java'
+	id 'java-library'
 	id 'org.openapi.generator'
 }
 
@@ -7,6 +7,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation project(':service')
+	implementation project(':domain')
 }
 
 openApiGenerate {
