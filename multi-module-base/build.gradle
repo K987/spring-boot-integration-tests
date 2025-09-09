@@ -57,9 +57,7 @@ subprojects {
 				integrationTest(JvmTestSuite) {
 					dependencies {
 						implementation project()
-						dependencies {
-							implementation 'org.springframework.boot:spring-boot-starter-test'
-						}
+						implementation 'org.springframework.boot:spring-boot-starter-test'
 					}
 				}
 				configureEach {
