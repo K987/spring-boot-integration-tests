@@ -73,9 +73,11 @@ subprojects {
 				}
 			}
 		}
+		//include implementation dependencies into integrationTestImplementation dependencies
+		configurations["integrationTestImplementation"].extendsFrom(configurations.implementation)
 
 		// run integration tests with gradle check task
-		tasks.named('check') {
+		tasks.named('check').configure {
 			dependsOn 'integrationTest'
 		}
 	}
