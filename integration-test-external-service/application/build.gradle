@@ -10,3 +10,9 @@ dependencies {
 	runtimeOnly 'com.h2database:h2'
 
 }
+
+tasks.named("bootRun").configure {
+    args = [
+        "--spring.config.additional-location=${layout.projectDirectory.dir('config')}/"
+    ]
+}

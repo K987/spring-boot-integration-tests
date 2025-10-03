@@ -1,0 +1,5 @@
+demo:
+  pet:
+    client:
+      host: "http://localhost:7070"
+      apiKey: "${PET_API_KEY:some-default-value}"

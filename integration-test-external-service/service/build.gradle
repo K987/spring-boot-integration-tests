@@ -4,6 +4,10 @@ plugins {
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.springframework:spring-web'
 	implementation project(':persistence')
 	implementation project(':domain')
+
+	integrationTestImplementation 'com.fasterxml.jackson.core:jackson-databind'
 }
