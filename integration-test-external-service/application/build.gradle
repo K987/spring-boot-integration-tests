@@ -8,5 +8,10 @@ dependencies {
 	implementation project(':web')
 
 	runtimeOnly 'com.h2database:h2'
+}
 
+tasks.named("bootRun").configure {
+    args = [
+        "--spring.config.additional-location=${rootProject.file('config')}${File.separator}"
+    ]
 }

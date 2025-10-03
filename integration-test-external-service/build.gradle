@@ -80,6 +80,10 @@ subprojects {
 		tasks.named('check').configure {
 			dependsOn 'integrationTest'
 		}
+        // make parameter name information available via reflection
+		tasks.withType(JavaCompile) {
+        	options.compilerArgs.add("-parameters")
+        }
 	}
 }
 

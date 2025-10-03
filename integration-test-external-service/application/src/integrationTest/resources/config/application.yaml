@@ -1,0 +1,5 @@
+demo:
+  pet:
+    client:
+      apiKey: "dummy-key"
+      host: "http://dummy-url.org"
