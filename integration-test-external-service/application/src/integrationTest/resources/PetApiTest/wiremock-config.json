@@ -1,0 +1,26 @@
+{
+  "mappings": [
+    {
+      "request": {
+        "method": "GET",
+        "urlPattern": "/v1/pet/12345"
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "jsonBody":
+          {
+            "id": 12345,
+            "name": "dog",
+            "status": "ORDERED",
+            "tags": [
+              "tag-1",
+              "tag-2"
+            ]
+          }
+      }
+    }
+  ]
+}

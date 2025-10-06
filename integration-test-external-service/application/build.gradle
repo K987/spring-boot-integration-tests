@@ -7,6 +7,13 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter'
 	implementation project(':web')
 
+    integrationTestImplementation 'org.springframework.boot:spring-boot-testcontainers'
+    integrationTestImplementation 'org.testcontainers:testcontainers'
+    integrationTestImplementation 'org.testcontainers:junit-jupiter'
+    integrationTestImplementation 'org.wiremock.integrations.testcontainers:wiremock-testcontainers-module:1.0-alpha-13'
+
+    integrationTestImplementation 'org.springframework:spring-web'
+
 	runtimeOnly 'com.h2database:h2'
 }
 
