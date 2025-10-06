@@ -29,7 +29,7 @@ public class PetApiTest {
     TestRestTemplate testRestTemplate;
 
     @Test
-    void whenFetchingExistingPet_ThenResponseResolved() throws Exception {
+    void whenFetchingExistingPet_ThenResponseResolved() {
         RequestEntity<?> request = RequestEntity
                 .get(URI.create("/v1/pet/12345"))
                 .accept(MediaType.APPLICATION_JSON)
@@ -48,9 +48,7 @@ public class PetApiTest {
                 () -> assertThat(response.getBody().get("category")).isEqualTo(null),
                 () -> assertThat(response.getBody().get("tags")).isInstanceOfSatisfying(
                         List.class,
-                        list -> {
-                            assertThat(list.size()).isEqualTo(2);
-                        }
+                        list -> assertThat(list.size()).isEqualTo(2)
                 ),
                 () -> assertThat(response.getBody().get("photoUrls")).isEqualTo(
                         List.of(

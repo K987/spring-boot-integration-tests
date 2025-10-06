@@ -15,7 +15,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PetWarehouseApiClient {
 
-    private final PetApiRepository repository;
+    private final PetWarehouseRepository repository;
 
     public Pet findPet(Long petId) {
         try {

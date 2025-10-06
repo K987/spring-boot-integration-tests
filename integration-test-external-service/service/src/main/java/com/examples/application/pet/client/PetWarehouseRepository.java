@@ -10,7 +10,7 @@ import org.springframework.web.service.annotation.*;
 import java.util.List;
 
 @HttpExchange(accept = MediaType.APPLICATION_JSON_VALUE)
-interface PetApiRepository {
+interface PetWarehouseRepository {
 
     @GetExchange(value = "/{petId}")
     PetDto findPet(@PathVariable Long petId);

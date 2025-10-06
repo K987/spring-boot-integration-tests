@@ -27,8 +27,8 @@ import static org.springframework.test.web.client.response.MockRestResponseCreat
             "demo.pet.client.apiKey=THIS_IS_SECRET"
 })
 @ContextConfiguration(classes = {
-        PetApiClientConfiguration.class,
-        PetApiRepository.class,
+        PetWarehouseApiClientConfiguration.class,
+        PetWarehouseRepository.class,
         PetWarehouseApiClient.class
 })
 public class PetWarehouseApiClientTest {

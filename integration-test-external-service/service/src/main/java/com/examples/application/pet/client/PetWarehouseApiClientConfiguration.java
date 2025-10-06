@@ -13,20 +13,23 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
 import java.net.URL;
 
 @Configuration
-@EnableConfigurationProperties(PetApiClientConfiguration.PetApiClientConfigurationProperties.class)
-class PetApiClientConfiguration {
+@EnableConfigurationProperties(PetWarehouseApiClientConfiguration.PetWarehouseApiClientConfigurationProperties.class)
+class PetWarehouseApiClientConfiguration {
 
     private static final String API_KEY_HEADER = "X-API-KEY";
 
     @ConfigurationProperties(prefix = "demo.pet.client")
     @Validated
-    record PetApiClientConfigurationProperties(
+    record PetWarehouseApiClientConfigurationProperties(
             @NotNull URL basePath,
             @NotNull String apiKey
     ) {}
 
     @Bean
-    PetApiRepository petApiRepository(RestClient.Builder builder, PetApiClientConfigurationProperties properties) {
+    PetWarehouseRepository petApiRepository(
+            RestClient.Builder builder,
+            PetWarehouseApiClientConfigurationProperties properties
+    ) {
 
         RestClient client = builder
                 .baseUrl(properties.basePath.toString())
@@ -39,6 +42,6 @@ class PetApiClientConfiguration {
                 .builderFor(
                         RestClientAdapter.create(client)
                 ).build();
-        return factory.createClient(PetApiRepository.class);
+        return factory.createClient(PetWarehouseRepository.class);
     }
 }
