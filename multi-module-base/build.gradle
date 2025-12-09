@@ -2,7 +2,7 @@ import org.springframework.boot.gradle.plugin.SpringBootPlugin
 
 plugins {
 	id 'base'
-	id 'org.springframework.boot' 			version '3.5.4'		apply false
+	id 'org.springframework.boot' 			version '4.0.0'		apply false
 	id 'io.spring.dependency-management' 	version '1.1.7'		apply false
 	id 'org.openapi.generator'				version '7.14.0'	apply false
 }
@@ -34,8 +34,8 @@ subprojects {
 		}
 
 		dependencies {
-		    	compileOnly 'org.projectlombok:lombok'
-            	annotationProcessor 'org.projectlombok:lombok'
+		    compileOnly 'org.projectlombok:lombok'
+            annotationProcessor 'org.projectlombok:lombok'
 		}
 
 		java {
@@ -57,7 +57,7 @@ subprojects {
 				integrationTest(JvmTestSuite) {
 					dependencies {
 						implementation project()
-						implementation 'org.springframework.boot:spring-boot-starter-test'
+						implementation 'org.springframework.boot:spring-boot-starter-aspectj-test'
 					}
 				}
 				configureEach {
@@ -73,6 +73,9 @@ subprojects {
 				}
 			}
 		}
+
+		//include implementation dependencies into integrationTestImplementation dependencies
+        configurations["integrationTestImplementation"].extendsFrom(configurations.implementation)
 
 		// run integration tests with gradle check task
 		tasks.named('check') {
