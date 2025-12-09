@@ -3,11 +3,11 @@ plugins {
 }
 
 dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter'
+    implementation 'org.springframework.boot:spring-boot-starter-aspectj'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
-    implementation 'org.springframework:spring-web'
+    implementation 'org.springframework.boot:spring-boot-starter-restclient'
 	implementation project(':persistence')
 	implementation project(':domain')
 
-	integrationTestImplementation 'com.fasterxml.jackson.core:jackson-databind'
+    integrationTestImplementation 'org.springframework.boot:spring-boot-starter-restclient-test'
 }

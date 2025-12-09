@@ -11,22 +11,22 @@ import org.springframework.web.bind.annotation.RestController;
 class StoreV1Controller implements StoreApi {
 
 	@Override
-	public ResponseEntity<Void> deleteOrder(Long orderId) throws Exception {
+	public ResponseEntity<Void> deleteOrder(Long orderId) {
         throw new UnsupportedOperationException("Not supported yet.");
 	}
 
 	@Override
-	public ResponseEntity<Map<String, Integer>> getInventory() throws Exception {
+	public ResponseEntity<Map<String, Integer>> getInventory() {
         throw new UnsupportedOperationException("Not supported yet.");
 	}
 
 	@Override
-	public ResponseEntity<OrderDto> getOrderById(Long orderId) throws Exception {
+	public ResponseEntity<OrderDto> getOrderById(Long orderId) {
         throw new UnsupportedOperationException("Not supported yet.");
 	}
 
 	@Override
-	public ResponseEntity<OrderDto> placeOrder(OrderDto orderDto) throws Exception {
+	public ResponseEntity<OrderDto> placeOrder(OrderDto orderDto) {
         throw new UnsupportedOperationException("Not supported yet.");
 	}
 }

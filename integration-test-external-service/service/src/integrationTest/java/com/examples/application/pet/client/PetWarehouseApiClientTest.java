@@ -2,17 +2,16 @@ package com.examples.application.pet.client;
 
 
 import com.examples.application.pet.Pet;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.client.RestClientTest;
+import org.springframework.boot.restclient.test.autoconfigure.RestClientTest;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.client.ExpectedCount;
 import org.springframework.test.web.client.MockRestServiceServer;
 import org.springframework.test.web.client.ResponseActions;
+import tools.jackson.databind.ObjectMapper;
 
 import java.util.List;
 
@@ -31,7 +30,7 @@ import static org.springframework.test.web.client.response.MockRestResponseCreat
         PetWarehouseRepository.class,
         PetWarehouseApiClient.class
 })
-public class PetWarehouseApiClientTest {
+class PetWarehouseApiClientTest {
 
     @Autowired
     ObjectMapper objectMapper;
@@ -43,7 +42,7 @@ public class PetWarehouseApiClientTest {
     PetWarehouseApiClient warehouseApiClient;
 
     @Test
-    void whenFetchingExistingPet_ThenResponseResolved() throws JsonProcessingException {
+    void whenFetchingExistingPet_ThenResponseResolved() {
         long petId = 1234L;
         String petName = "testName";
         String petStatus = "ON_STOCK";
@@ -65,7 +64,7 @@ public class PetWarehouseApiClientTest {
     }
 
     @Test
-    void whenFetchingNonExistingPet_ThenPetApiExceptionThrown() throws JsonProcessingException {
+    void whenFetchingNonExistingPet_ThenPetApiExceptionThrown() {
         long petId = 1234L;
         createMockBase(HttpMethod.GET, String.valueOf(petId)).andRespond(
                 withResourceNotFound()
@@ -87,7 +86,7 @@ public class PetWarehouseApiClientTest {
     }
 
     @Test
-    void givenPetDoesNotExists_whenCreatingPet_ThenPetCreated() throws JsonProcessingException {
+    void givenPetDoesNotExists_whenCreatingPet_ThenPetCreated() {
         String petName = "testPet";
         List<String> tags = List.of("test-tag-1", "test-tag-2");
         PetDto petDto = new PetDto(null, petName, null, tags) ;
@@ -116,7 +115,7 @@ public class PetWarehouseApiClientTest {
     }
 
     @Test
-    void givenPetExists_whenCreatingPet_ThenPetApiExceptionThrown() throws JsonProcessingException {
+    void givenPetExists_whenCreatingPet_ThenPetApiExceptionThrown() {
         String petName = "testPet";
         long petId = 1234L;
         List<String> tags = List.of("test-tag-1", "test-tag-2");
@@ -159,7 +158,7 @@ public class PetWarehouseApiClientTest {
     }
 
     @Test
-    void whenSearchingByStatus_thenPetsWithSameStatusReturned() throws JsonProcessingException {
+    void whenSearchingByStatus_thenPetsWithSameStatusReturned() {
         List<String> tags = List.of("test-tag-1", "test-tag-2");
         List<PetDto> petDtos = List.of(
                 new PetDto(1234L, "testName1", "ON_STOCK", tags),
@@ -175,14 +174,14 @@ public class PetWarehouseApiClientTest {
 
         List<Pet> petsByStatus = warehouseApiClient.search(Pet.Status.AVAILABLE, null);
         assertAll(
-                () -> assertThat(petsByStatus.size()).isEqualTo(2),
+                () -> assertThat(petsByStatus).hasSize(2),
                 () -> assertThat(petsByStatus).allMatch(pet -> pet.getStatus().equals(Pet.Status.AVAILABLE)),
         () -> mockServer.verify()
         );
     }
 
     @Test
-    void whenSearchingByTags_thenPetsTagsReturned() throws JsonProcessingException {
+    void whenSearchingByTags_thenPetsTagsReturned() {
         List<String> tags = List.of("test-tag-1", "test-tag-2");
         List<PetDto> petDtos = List.of(
                 new PetDto(1234L, "dog", "ON_STOCK", tags),
@@ -198,7 +197,7 @@ public class PetWarehouseApiClientTest {
 
         List<Pet> petsByStatus = warehouseApiClient.search(null, tags);
         assertAll(
-                () -> assertThat(petsByStatus.size()).isEqualTo(2),
+                () -> assertThat(petsByStatus).hasSize(2),
                 () -> assertThat(petsByStatus).allMatch(pet -> pet.getTags().containsAll(tags)),
                 () -> mockServer.verify()
         );
