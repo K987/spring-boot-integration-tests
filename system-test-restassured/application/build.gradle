@@ -5,12 +5,14 @@ plugins {
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter'
+	implementation 'org.springframework.boot:spring-boot-starter-aspectj'
 	implementation project(':web')
 
 	runtimeOnly 'com.h2database:h2'
 
-	integrationTestImplementation 'org.springframework.boot:spring-boot-starter-json'
+	integrationTestImplementation 'com.fasterxml.jackson.core:jackson-annotations'
+	integrationTestImplementation 'com.fasterxml.jackson.core:jackson-databind'
+	integrationTestImplementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
 	integrationTestImplementation 'io.rest-assured:rest-assured'
 }
 
