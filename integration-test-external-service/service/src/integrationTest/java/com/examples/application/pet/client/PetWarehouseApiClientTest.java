@@ -23,12 +23,13 @@ import static org.springframework.test.web.client.response.MockRestResponseCreat
 @RestClientTest(
         properties = {
             "demo.pet.client.basePath=http://dummy.org/v1/pet",
-            "demo.pet.client.apiKey=THIS_IS_SECRET"
+            "demo.pet.client.apiKey=THIS_IS_SECRET",
+            "demo.pet.client.clientId=dummy-client-id"
 })
 @ContextConfiguration(classes = {
         PetWarehouseApiClientConfiguration.class,
         PetWarehouseRepository.class,
-        PetWarehouseApiClient.class
+        PetWarehouseApiClient.class,
 })
 class PetWarehouseApiClientTest {
 

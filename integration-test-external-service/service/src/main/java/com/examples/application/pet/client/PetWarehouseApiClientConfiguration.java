@@ -5,12 +5,18 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.oauth2.client.OAuth2AuthorizationFailureHandler;
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClientManager;
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
+import org.springframework.security.oauth2.client.web.client.OAuth2ClientHttpRequestInterceptor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.client.support.RestClientAdapter;
 import org.springframework.web.service.invoker.HttpServiceProxyFactory;
 
 import java.net.URL;
+
+import static org.springframework.security.oauth2.client.web.client.RequestAttributeClientRegistrationIdResolver.clientRegistrationId;
 
 @Configuration
 @EnableConfigurationProperties(PetWarehouseApiClientConfiguration.PetWarehouseApiClientConfigurationProperties.class)
@@ -22,20 +28,34 @@ class PetWarehouseApiClientConfiguration {
     @Validated
     record PetWarehouseApiClientConfigurationProperties(
             @NotNull URL basePath,
-            @NotNull String apiKey
+            @NotNull String apiKey,
+            @NotNull String clientId
     ) {}
 
     @Bean
     PetWarehouseRepository petApiRepository(
             RestClient.Builder builder,
-            PetWarehouseApiClientConfigurationProperties properties
+            PetWarehouseApiClientConfigurationProperties properties,
+            OAuth2AuthorizedClientManager authorizedClientManager,
+            OAuth2AuthorizedClientService authorizedClientService
     ) {
+
+        OAuth2ClientHttpRequestInterceptor requestInterceptor =
+                new OAuth2ClientHttpRequestInterceptor(authorizedClientManager);
+
+        OAuth2AuthorizationFailureHandler authorizationFailureHandler =
+                OAuth2ClientHttpRequestInterceptor.authorizationFailureHandler(authorizedClientService);
+        requestInterceptor.setAuthorizationFailureHandler(authorizationFailureHandler);
 
         RestClient client = builder
                 .baseUrl(properties.basePath.toString())
                 .defaultHeaders(httpHeaders ->
                     httpHeaders.add(API_KEY_HEADER, properties.apiKey)
                 )
+                .defaultRequest(req ->
+                    req.attributes(clientRegistrationId(properties.clientId))
+                )
+                .requestInterceptor(requestInterceptor)
                 .build();
 
         HttpServiceProxyFactory factory = HttpServiceProxyFactory

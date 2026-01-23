@@ -1,0 +1,14 @@
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          dummy-client-id:
+            client-id: "abcd"
+            client-secret: "password"
+            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
+            authorization-grant-type: "client_credentials"
+
+        provider:
+          default:
+            token-uri: "https://my-auth-server.com/oauth2/token"
