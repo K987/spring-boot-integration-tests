@@ -7,7 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.restclient.test.autoconfigure.RestClientTest;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClientManager;
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.client.ExpectedCount;
 import org.springframework.test.web.client.MockRestServiceServer;
 import org.springframework.test.web.client.ResponseActions;
@@ -41,6 +44,12 @@ class PetWarehouseApiClientTest {
 
     @Autowired
     PetWarehouseApiClient warehouseApiClient;
+
+    @MockitoBean
+    OAuth2AuthorizedClientManager authorizedClientManager;
+
+    @MockitoBean
+    OAuth2AuthorizedClientService authorizedClientService;
 
     @Test
     void whenFetchingExistingPet_ThenResponseResolved() {
