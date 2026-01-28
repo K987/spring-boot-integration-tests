@@ -1,6 +1,7 @@
 package com.examples.application.pet.client;
 
 import jakarta.validation.constraints.NotNull;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -29,11 +30,12 @@ class PetWarehouseApiClientConfiguration {
     record PetWarehouseApiClientConfigurationProperties(
             @NotNull URL basePath,
             @NotNull String apiKey,
-            @NotNull String clientId
+            String clientId
     ) {}
 
     @Bean
-    PetWarehouseRepository petApiRepository(
+    @ConditionalOnProperty(value = "demo.pet.client.client-id")
+    PetWarehouseRepository petApiRepositoryWithOauth(
             RestClient.Builder builder,
             PetWarehouseApiClientConfigurationProperties properties,
             OAuth2AuthorizedClientManager authorizedClientManager,
@@ -47,17 +49,34 @@ class PetWarehouseApiClientConfiguration {
                 OAuth2ClientHttpRequestInterceptor.authorizationFailureHandler(authorizedClientService);
         requestInterceptor.setAuthorizationFailureHandler(authorizationFailureHandler);
 
-        RestClient client = builder
-                .baseUrl(properties.basePath.toString())
-                .defaultHeaders(httpHeaders ->
-                    httpHeaders.add(API_KEY_HEADER, properties.apiKey)
-                )
+        RestClient client = createRestClientBase(builder, properties)
                 .defaultRequest(req ->
                     req.attributes(clientRegistrationId(properties.clientId))
                 )
                 .requestInterceptor(requestInterceptor)
                 .build();
 
+        return createRepository(client);
+    }
+
+    @Bean
+    @ConditionalOnProperty(value = "demo.pet.client.client-id", matchIfMissing = true, havingValue = "true")
+    PetWarehouseRepository petApiRepository(
+            RestClient.Builder builder,
+            PetWarehouseApiClientConfigurationProperties properties
+    ) {
+        return createRepository(createRestClientBase(builder, properties).build());
+    }
+
+    private static RestClient.Builder createRestClientBase(RestClient.Builder builder, PetWarehouseApiClientConfigurationProperties properties) {
+        return builder
+                .baseUrl(properties.basePath.toString())
+                .defaultHeaders(httpHeaders ->
+                        httpHeaders.add(API_KEY_HEADER, properties.apiKey)
+                );
+    }
+
+    private static PetWarehouseRepository createRepository(RestClient client) {
         HttpServiceProxyFactory factory = HttpServiceProxyFactory
                 .builderFor(
                         RestClientAdapter.create(client)
