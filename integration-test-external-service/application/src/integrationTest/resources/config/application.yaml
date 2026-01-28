@@ -1,5 +1,17 @@
 demo:
   pet:
     client:
-      apiKey: "dummy-key"
+      api-key: "dummy-key"
       host: "http://dummy-url.org"
+      client-id: "pet-api-client"
+
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          pet-api-client:
+            provider: default
+            client-id: pet-api-client
+            client-secret: 9KaXjVZTVHHsYfI1LKGaN1H5L6RS4Pi9
+            authorization-grant-type: client_credentials

@@ -1,7 +1,9 @@
 package com.examples.application.pet;
 
 import com.examples.application.TestContainerConfiguration;
+import com.examples.application.WiremockHelper;
 import com.examples.application.api.v1.PetDto;
+import com.github.tomakehurst.wiremock.client.WireMock;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.resttestclient.autoconfigure.AutoConfigureRestTestClient;
@@ -43,5 +45,14 @@ public class PetApiTest {
                                "http://my.cdm.com/pet/12345/3"
                        )
                ));
+
+        WireMock wireMockClient = WiremockHelper.getWireMockClient();
+
+        wireMockClient.verifyThat(
+                WireMock.getRequestedFor(
+                        WireMock.urlEqualTo("/v1/pet/12345"))
+                        .withHeader("Authorization", WireMock.matching("Bearer .*")
+                        )
+        );
     }
 }

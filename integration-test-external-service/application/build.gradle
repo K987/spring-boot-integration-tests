@@ -5,14 +5,16 @@ plugins {
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-aspectj'
+	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation project(':web')
 
     integrationTestImplementation 'org.springframework.boot:spring-boot-testcontainers'
     integrationTestImplementation 'org.testcontainers:testcontainers'
     integrationTestImplementation 'org.testcontainers:testcontainers-junit-jupiter'
     integrationTestImplementation 'org.springframework.boot:spring-boot-resttestclient'
-    integrationTestImplementation 'org.wiremock.integrations.testcontainers:wiremock-testcontainers-module:1.0-alpha-13'
+    integrationTestImplementation 'org.wiremock.integrations.testcontainers:wiremock-testcontainers-module:1.0-alpha-15'
     integrationTestImplementation 'com.github.dasniko:testcontainers-keycloak:3.4.0'
+    integrationTestImplementation 'org.wiremock:wiremock:3.5.4'
 
 	runtimeOnly 'com.h2database:h2'
 }
