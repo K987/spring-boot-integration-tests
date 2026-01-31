@@ -1,0 +1,91 @@
+import org.springframework.boot.gradle.plugin.SpringBootPlugin
+
+plugins {
+	id 'base'
+	id 'org.springframework.boot' 			version '4.0.0'		apply false
+	id 'io.spring.dependency-management' 	version '1.1.7'		apply false
+	id 'org.openapi.generator'				version '7.14.0'	apply false
+}
+
+wrapper {
+	gradleVersion = '9.0.0'
+	distributionUrl = "https://services.gradle.org/distributions/gradle-${gradleVersion}-all.zip"
+}
+
+allprojects {
+	group = 'com.examples'
+	version = '0.0.1-SNAPSHOT'
+
+	repositories {
+		mavenCentral()
+	}
+}
+
+subprojects {
+	// base configuration of all java subprojects
+	pluginManager.withPlugin('java') {
+		apply plugin: 'io.spring.dependency-management'
+		apply plugin: 'jvm-test-suite'
+
+		dependencyManagement {
+			imports {
+				mavenBom SpringBootPlugin.BOM_COORDINATES
+			}
+		}
+
+		dependencies {
+		    compileOnly 'org.projectlombok:lombok'
+            annotationProcessor 'org.projectlombok:lombok'
+		}
+
+		java {
+			toolchain {
+				languageVersion = JavaLanguageVersion.of(21)
+			}
+		}
+		// https://docs.gradle.org/current/userguide/jvm_test_suite_plugin.html#sec:declare_an_additional_test_suite
+		testing {
+			suites {
+				test {
+					useJUnitJupiter()
+					dependencies {
+						implementation 'org.mockito:mockito-core'
+						implementation 'org.assertj:assertj-core'
+						implementation 'org.hamcrest:hamcrest'
+					}
+				}
+				integrationTest(JvmTestSuite) {
+					dependencies {
+						implementation project()
+						implementation 'org.springframework.boot:spring-boot-starter-aspectj-test'
+					}
+				}
+				configureEach {
+					targets.all {
+						testTask.configure() {
+							testLogging { events 'skipped', 'failed' }
+							systemProperty 'java.io.tmpdir', "${-> layout.buildDirectory.dir('tmp').get()}"
+							finalizedBy rootProject.tasks.named("${name}TestReport", TestReport) {
+								testResults.from binaryResultsDirectory
+							}
+						}
+					}
+				}
+			}
+		}
+
+		//include implementation dependencies into integrationTestImplementation dependencies
+        configurations["integrationTestImplementation"].extendsFrom(configurations.implementation)
+
+		// run integration tests with gradle check task
+		tasks.named('check') {
+			dependsOn 'integrationTest'
+		}
+	}
+}
+
+['test', 'integrationTest', 'systemTest'].each { taskName ->
+	tasks.register("${taskName}TestReport", TestReport) {
+		destinationDirectory = layout.buildDirectory.dir("reports/tests/${taskName}")
+	}
+}
