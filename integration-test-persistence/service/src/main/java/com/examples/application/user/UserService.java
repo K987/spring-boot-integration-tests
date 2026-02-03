@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -14,7 +15,7 @@ public class UserService {
     private final UserRepository userRepository;
 
     public User create(User user) {
-        if (userRepository.existsById(user.getId())) {
+        if (Objects.nonNull(user.getId()) && userRepository.existsById(user.getId())) {
             throw new IllegalStateException("User with id " + user.getId() + " already exists");
         }
         user.setId(null);

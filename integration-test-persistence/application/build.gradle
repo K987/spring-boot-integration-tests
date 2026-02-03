@@ -9,4 +9,8 @@ dependencies {
 	implementation project(':web')
 
 	runtimeOnly 'com.h2database:h2'
+
+    integrationTestImplementation 'org.instancio:instancio-junit'
+	integrationTestImplementation 'org.springframework.boot:spring-boot-resttestclient'
+	integrationTestImplementation 'org.springframework:spring-tx'
 }

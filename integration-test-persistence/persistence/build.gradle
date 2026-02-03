@@ -5,6 +5,24 @@ plugins {
 dependencies {
     api 'org.springframework.data:spring-data-commons'
     api 'org.springframework:spring-tx'
+
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-flyway'
     implementation project(':domain')
+
+    integrationTestImplementation 'org.springframework.boot:spring-boot-starter-data-jpa-test'
+    integrationTestImplementation 'org.instancio:instancio-junit:5.5.1'
+
+    // MySQL test dependencies
+    integrationTestRuntimeOnly 'com.mysql:mysql-connector-j'
+    integrationTestRuntimeOnly 'org.flywaydb:flyway-mysql'
+    integrationTestRuntimeOnly 'org.testcontainers:mysql:1.21.4'
+
+    // PostgreSQL test dependencies
+    integrationTestRuntimeOnly 'org.postgresql:postgresql'
+    integrationTestRuntimeOnly 'org.flywaydb:flyway-database-postgresql'
+    integrationTestRuntimeOnly 'org.testcontainers:postgresql:1.21.4'
+
+    // H2 test dependencies
+    integrationTestRuntimeOnly 'com.h2database:h2'
 }

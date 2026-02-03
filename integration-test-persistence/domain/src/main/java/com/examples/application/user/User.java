@@ -6,6 +6,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.*;
 
+import java.util.UUID;
+
 @Entity
 @Table(name = "t_users")
 @Getter
@@ -14,7 +16,7 @@ public class User {
 
     @Id
     @GeneratedValue
-    private Long id;
+    private UUID id;
 
     private String username;
 
