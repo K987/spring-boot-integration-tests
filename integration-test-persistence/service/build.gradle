@@ -6,4 +6,10 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-aspectj'
 	implementation project(':persistence')
 	implementation project(':domain')
+
+	integrationTestImplementation 'org.springframework.boot:spring-boot-starter-data-jdbc-test'
+    integrationTestImplementation 'org.instancio:instancio-junit'
+
+    integrationTestRuntimeOnly 'com.h2database:h2'
+
 }
