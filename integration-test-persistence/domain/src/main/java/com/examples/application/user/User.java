@@ -3,6 +3,7 @@ package com.examples.application.user;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.PostPersist;
 import jakarta.persistence.Table;
 import lombok.*;
 
@@ -31,5 +32,10 @@ public class User {
     private String phone;
 
     private Integer userStatus;
+
+    @PostPersist
+    public void postPersist() {
+        System.out.println("PostPersist called for User: " + this.username);
+    }
 
 }
