@@ -1,0 +1,13 @@
+-- Flyway migration script to create T_USERS table for User entity (H2 version)
+
+CREATE TABLE ${usersTableName} (
+    id UUID DEFAULT RANDOM_UUID() PRIMARY KEY,
+    username VARCHAR(255),
+    first_name VARCHAR(255),
+    last_name VARCHAR(255),
+    email VARCHAR(255),
+    password VARCHAR(255),
+    phone VARCHAR(255),
+    user_status INTEGER
+);
+

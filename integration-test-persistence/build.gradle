@@ -31,6 +31,9 @@ subprojects {
 			imports {
 				mavenBom SpringBootPlugin.BOM_COORDINATES
 			}
+			dependencies {
+                dependency 'org.instancio:instancio-junit:5.5.1'
+            }
 		}
 
 		dependencies {
@@ -63,6 +66,12 @@ subprojects {
 				configureEach {
 					targets.all {
 						testTask.configure() {
+						    def mockitoAgent = configurations.testRuntimeClasspath.find {
+                              it.name.contains('mockito-core')
+                            }
+                            if (mockitoAgent) {
+                              jvmArgs "-javaagent:${mockitoAgent.absolutePath}"
+                            }
 							testLogging { events 'skipped', 'failed' }
 							systemProperty 'java.io.tmpdir', "${-> layout.buildDirectory.dir('tmp').get()}"
 							finalizedBy rootProject.tasks.named("${name}TestReport", TestReport) {

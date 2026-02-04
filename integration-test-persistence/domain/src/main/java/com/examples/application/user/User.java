@@ -1,20 +1,18 @@
 package com.examples.application.user;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
 import lombok.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.relational.core.mapping.Table;
 
-@Entity
-@Table(name = "t_users")
+import java.util.UUID;
+
+@Table(name = "${spring.flyway.placeholders.usersTableName}")
 @Getter
 @Setter
 public class User {
 
     @Id
-    @GeneratedValue
-    private Long id;
+    private UUID id;
 
     private String username;
 
